@@ -1,15 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ControlSimples</title>
+    <title>ControlSimples - Gestão Financeira</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiRmluYW7Dp2FzIFBXQSIsInNob3J0X25hbWUiOiJGaW7Dp2FzIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMDAwMDAiLCJ0aGVtZV9jb2xvciI6IiMwMDAwMDAifQ==">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQ29udHJvbFNpbXBsZXMiLCJzaG9ydF9uYW1lIjoiQ29udHJvbFNpbXBsZXMiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsInRoZW1lX2NvbG9yIjoiI2ZmZmZmZiJ9">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,16 +20,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            black: '#0a0a0a',
-                            dark: '#141414',
-                            card: '#1e1e1e',
+                            bg: '#f8fafc',
+                            card: '#ffffff',
+                            dark: '#0f172a',
+                            border: '#e2e8f0',
                             green: '#10b981',
                             greenHover: '#059669',
                             red: '#ef4444',
                             redHover: '#dc2626',
-                            white: '#f9fafb',
-                            gray: '#71717a',
-                            border: '#27272a'
+                            text: '#334155',
+                            muted: '#64748b'
                         }
                     }
                 }
@@ -40,32 +41,31 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* Custom scrollbar & mobile styling */
         body {
-            background-color: #000000;
-            color: #f9fafb;
+            background-color: #f1f5f9;
+            color: #0f172a;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
         input, select {
-            color-scheme: dark;
+            color-scheme: light;
         }
     </style>
 </head>
-<body class="h-full flex flex-col max-w-md mx-auto bg-brand-black shadow-2xl relative overflow-hidden">
+<body class="h-full flex flex-col max-w-md mx-auto bg-brand-bg shadow-2xl relative overflow-hidden">
 
     <!-- Header -->
-    <header class="px-5 py-4 border-b border-brand-border bg-brand-dark/80 backdrop-blur sticky top-0 z-30 flex items-center justify-between">
+    <header class="px-5 py-4 border-b border-brand-border bg-white/90 backdrop-blur sticky top-0 z-30 flex items-center justify-between shadow-sm">
         <div class="flex items-center space-x-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-green to-brand-red flex items-center justify-center text-brand-black font-black shadow-lg">
-                <i data-lucide="wallet" class="w-5 h-5 text-black"></i>
+            <div class="w-9 h-9 rounded-xl bg-brand-dark flex items-center justify-center text-white font-black shadow-md">
+                <i data-lucide="wallet" class="w-5 h-5 text-brand-green"></i>
             </div>
             <div>
-                <h1 class="font-bold text-base leading-tight tracking-tight">ControlSimples</h1>
-                <p class="text-xs text-brand-gray">Controle Financeiro Simples</p>
+                <h1 class="font-black text-base leading-tight tracking-tight text-brand-dark">ControlSimples</h1>
+                <p class="text-xs text-brand-muted">Suas finanças em ordem</p>
             </div>
         </div>
-        <button onclick="app.resetData()" class="text-brand-gray hover:text-brand-red text-xs px-2.5 py-1.5 rounded-lg border border-brand-border bg-brand-card transition-colors flex items-center gap-1">
+        <button onclick="app.resetData()" class="text-brand-muted hover:text-brand-red text-xs px-2.5 py-1.5 rounded-lg border border-brand-border bg-brand-bg transition-colors flex items-center gap-1 font-medium">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             <span>Limpar</span>
         </button>
@@ -77,38 +77,38 @@
         <!-- SECTION: HOME / DASHBOARD -->
         <section id="view-home" class="space-y-5 view-section">
             <!-- Balance Card -->
-            <div id="balance-card-container" class="p-6 rounded-2xl bg-brand-card border border-brand-border shadow-xl relative overflow-hidden transition-all">
+            <div id="balance-card-container" class="p-6 rounded-2xl bg-brand-card border border-brand-border shadow-md relative overflow-hidden transition-all">
                 <div class="absolute -right-10 -bottom-10 w-32 h-32 rounded-full opacity-10 bg-brand-green pointer-events-none" id="balance-glow"></div>
                 <div class="flex justify-between items-start mb-2">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-gray">Saldo em Caixa</span>
-                    <span id="badge-status" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-green/20 text-brand-green border border-brand-green/30">Positivo</span>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-muted">Saldo em Caixa</span>
+                    <span id="badge-status" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-green/10 text-brand-green border border-brand-green/20">Positivo</span>
                 </div>
-                <div class="text-3xl font-black tracking-tight mb-4" id="card-total-caixa">R$ 0,00</div>
+                <div class="text-3xl font-black tracking-tight mb-4 text-brand-dark" id="card-total-caixa">R$ 0,00</div>
                 
-                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-brand-border/60 text-xs">
+                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-brand-border text-xs">
                     <div>
-                        <span class="text-brand-gray block mb-0.5 flex items-center gap-1"><i data-lucide="arrow-down-left" class="w-3 h-3 text-brand-green"></i>Entradas</span>
+                        <span class="text-brand-muted block mb-0.5 flex items-center gap-1"><i data-lucide="arrow-down-left" class="w-3 h-3 text-brand-green"></i>Entradas</span>
                         <span class="font-bold text-brand-green text-sm" id="card-total-entradas">R$ 0,00</span>
                     </div>
                     <div>
-                        <span class="text-brand-gray block mb-0.5 flex items-center gap-1"><i data-lucide="arrow-up-right" class="w-3 h-3 text-brand-red"></i>Saídas</span>
+                        <span class="text-brand-muted block mb-0.5 flex items-center gap-1"><i data-lucide="arrow-up-right" class="w-3 h-3 text-brand-red"></i>Saídas</span>
                         <span class="font-bold text-brand-red text-sm" id="card-total-saidas">R$ 0,00</span>
                     </div>
                 </div>
             </div>
 
             <!-- Contas a Pagar Card Resumo -->
-            <div onclick="app.switchTab('bills')" class="p-4 rounded-xl bg-brand-card border border-brand-border shadow-md flex items-center justify-between cursor-pointer hover:border-brand-gray transition-colors">
+            <div onclick="app.switchTab('bills')" class="p-4 rounded-xl bg-brand-card border border-brand-border shadow-sm flex items-center justify-between cursor-pointer hover:border-brand-muted transition-colors">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-xl bg-brand-red/10 border border-brand-red/20 flex items-center justify-center text-brand-red">
                         <i data-lucide="receipt" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs text-brand-gray font-medium">Contas a Pagar (Pendentes)</h3>
-                        <p class="text-lg font-bold text-brand-white" id="card-total-contas">R$ 0,00</p>
+                        <h3 class="text-xs text-brand-muted font-medium">Contas a Pagar (Pendentes)</h3>
+                        <p class="text-lg font-bold text-brand-dark" id="card-total-contas">R$ 0,00</p>
                     </div>
                 </div>
-                <div class="text-brand-gray flex items-center text-xs gap-1 font-semibold">
+                <div class="text-brand-muted flex items-center text-xs gap-1 font-semibold">
                     <span>Ver</span>
                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </div>
@@ -116,21 +116,21 @@
 
             <!-- Quick Action Buttons -->
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="app.openModal('entry', 'income')" class="py-4 px-4 rounded-xl bg-brand-green hover:bg-brand-greenHover text-brand-black font-bold flex flex-col items-center justify-center space-y-1 shadow-lg shadow-brand-green/20 transition-all active:scale-95">
+                <button onclick="app.openModal('entry', 'income')" class="py-4 px-4 rounded-xl bg-brand-green hover:bg-brand-greenHover text-white font-bold flex flex-col items-center justify-center space-y-1 shadow-md shadow-brand-green/20 transition-all active:scale-95">
                     <i data-lucide="plus-circle" class="w-6 h-6"></i>
-                    <span class="text-sm">Adicionar Entrada</span>
+                    <span class="text-sm">+ Entrada</span>
                 </button>
-                <button onclick="app.openModal('entry', 'expense')" class="py-4 px-4 rounded-xl bg-brand-red hover:bg-brand-redHover text-brand-white font-bold flex flex-col items-center justify-center space-y-1 shadow-lg shadow-brand-red/20 transition-all active:scale-95">
+                <button onclick="app.openModal('entry', 'expense')" class="py-4 px-4 rounded-xl bg-brand-red hover:bg-brand-redHover text-white font-bold flex flex-col items-center justify-center space-y-1 shadow-md shadow-brand-red/20 transition-all active:scale-95">
                     <i data-lucide="minus-circle" class="w-6 h-6"></i>
-                    <span class="text-sm">Adicionar Saída</span>
+                    <span class="text-sm">- Saída</span>
                 </button>
             </div>
 
             <!-- Recent Transactions Widget -->
             <div class="space-y-3 pt-2">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-sm font-bold tracking-wide uppercase text-brand-gray">Últimas Transações</h2>
-                    <button onclick="app.switchTab('transactions')" class="text-xs text-brand-green font-semibold hover:underline">Ver todas</button>
+                    <h2 class="text-xs font-bold tracking-wider uppercase text-brand-muted">Últimas Transações</h2>
+                    <button onclick="app.switchTab('transactions')" class="text-xs text-brand-green font-bold hover:underline">Ver todas</button>
                 </div>
                 <div id="recent-transactions-list" class="space-y-2">
                     <!-- Populated via JS -->
@@ -141,17 +141,17 @@
         <!-- SECTION: TRANSACTIONS -->
         <section id="view-transactions" class="space-y-4 view-section hidden">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold">Histórico de Transações</h2>
-                <button onclick="app.openModal('entry')" class="px-3 py-1.5 rounded-lg bg-brand-white text-brand-black font-semibold text-xs flex items-center gap-1.5 shadow">
+                <h2 class="text-lg font-bold text-brand-dark">Histórico de Transações</h2>
+                <button onclick="app.openModal('entry')" class="px-3 py-1.5 rounded-lg bg-brand-dark text-white font-semibold text-xs flex items-center gap-1.5 shadow">
                     <i data-lucide="plus" class="w-4 h-4"></i> Nova
                 </button>
             </div>
             
             <!-- Filter buttons -->
             <div class="flex gap-2 text-xs">
-                <button onclick="app.filterTransactions('all')" id="filter-t-all" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-white transition-colors">Todas</button>
-                <button onclick="app.filterTransactions('income')" id="filter-t-income" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-gray transition-colors">Entradas</button>
-                <button onclick="app.filterTransactions('expense')" id="filter-t-expense" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-gray transition-colors">Saídas</button>
+                <button onclick="app.filterTransactions('all')" id="filter-t-all" class="px-3 py-1.5 rounded-lg bg-brand-dark text-white font-medium transition-colors">Todas</button>
+                <button onclick="app.filterTransactions('income')" id="filter-t-income" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-muted transition-colors">Entradas</button>
+                <button onclick="app.filterTransactions('expense')" id="filter-t-expense" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-muted transition-colors">Saídas</button>
             </div>
 
             <div id="full-transactions-list" class="space-y-2">
@@ -163,21 +163,21 @@
         <section id="view-bills" class="space-y-4 view-section hidden">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-lg font-bold">Contas a Pagar</h2>
-                    <p class="text-xs text-brand-gray">Gerencie vencimentos e boletos</p>
+                    <h2 class="text-lg font-bold text-brand-dark">Contas a Pagar</h2>
+                    <p class="text-xs text-brand-muted">Gerencie vencimentos e boletos</p>
                 </div>
-                <button onclick="app.openModal('bill')" class="px-3 py-1.5 rounded-lg bg-brand-white text-brand-black font-semibold text-xs flex items-center gap-1.5 shadow">
+                <button onclick="app.openModal('bill')" class="px-3 py-1.5 rounded-lg bg-brand-dark text-white font-semibold text-xs flex items-center gap-1.5 shadow">
                     <i data-lucide="plus" class="w-4 h-4"></i> Nova Conta
                 </button>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border">
-                    <span class="text-[11px] text-brand-gray block">Pendente</span>
+                <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
+                    <span class="text-[11px] text-brand-muted block font-medium">Pendente</span>
                     <span class="text-base font-bold text-brand-red" id="bills-total-pendente">R$ 0,00</span>
                 </div>
-                <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border">
-                    <span class="text-[11px] text-brand-gray block">Pagas</span>
+                <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
+                    <span class="text-[11px] text-brand-muted block font-medium">Pagas</span>
                     <span class="text-base font-bold text-brand-green" id="bills-total-pago">R$ 0,00</span>
                 </div>
             </div>
@@ -190,27 +190,27 @@
     </main>
 
     <!-- Bottom Navigation Bar -->
-    <nav class="absolute bottom-0 left-0 right-0 h-20 bg-brand-dark/95 border-t border-brand-border backdrop-blur-md px-6 flex items-center justify-around z-30">
+    <nav class="absolute bottom-0 left-0 right-0 h-20 bg-white/95 border-t border-brand-border backdrop-blur-md px-6 flex items-center justify-around z-30 shadow-lg">
         <button onclick="app.switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-brand-green transition-colors">
             <i data-lucide="home" class="w-5 h-5"></i>
-            <span class="text-[10px] font-semibold">Início</span>
+            <span class="text-[10px] font-bold">Início</span>
         </button>
-        <button onclick="app.switchTab('transactions')" id="nav-transactions" class="flex flex-col items-center space-y-1 text-brand-gray hover:text-brand-white transition-colors">
+        <button onclick="app.switchTab('transactions')" id="nav-transactions" class="flex flex-col items-center space-y-1 text-brand-muted hover:text-brand-dark transition-colors">
             <i data-lucide="arrow-left-right" class="w-5 h-5"></i>
             <span class="text-[10px] font-semibold">Transações</span>
         </button>
-        <button onclick="app.switchTab('bills')" id="nav-bills" class="flex flex-col items-center space-y-1 text-brand-gray hover:text-brand-white transition-colors">
+        <button onclick="app.switchTab('bills')" id="nav-bills" class="flex flex-col items-center space-y-1 text-brand-muted hover:text-brand-dark transition-colors">
             <i data-lucide="receipt" class="w-5 h-5"></i>
-            <span class="text-[10px] font-semibold">Contas a Pagar</span>
+            <span class="text-[10px] font-semibold">Contas</span>
         </button>
     </nav>
 
     <!-- MODAL: Transaction Entry -->
-    <div id="modal-entry" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
-        <div class="bg-brand-dark border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-5 shadow-2xl animate-in fade-in slide-in-from-bottom-5">
+    <div id="modal-entry" class="fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
+        <div class="bg-brand-card border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-5 shadow-2xl">
             <div class="flex items-center justify-between border-b border-brand-border pb-3">
-                <h3 id="modal-entry-title" class="font-bold text-base">Nova Transação</h3>
-                <button onclick="app.closeModal('entry')" class="w-8 h-8 rounded-full bg-brand-card flex items-center justify-center text-brand-gray hover:text-white">
+                <h3 id="modal-entry-title" class="font-bold text-base text-brand-dark">Nova Transação</h3>
+                <button onclick="app.closeModal('entry')" class="w-8 h-8 rounded-full bg-brand-bg flex items-center justify-center text-brand-muted hover:text-brand-dark">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -219,34 +219,34 @@
                 <input type="hidden" id="entry-id">
                 
                 <div class="flex gap-2">
-                    <button type="button" onclick="app.setEntryType('income')" id="type-income-btn" class="flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-card text-brand-gray transition-all flex items-center justify-center gap-1.5">
+                    <button type="button" onclick="app.setEntryType('income')" id="type-income-btn" class="flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-bg text-brand-muted transition-all flex items-center justify-center gap-1.5">
                         <i data-lucide="arrow-down-left" class="w-4 h-4 text-brand-green"></i> Entrada
                     </button>
-                    <button type="button" onclick="app.setEntryType('expense')" id="type-expense-btn" class="flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-card text-brand-gray transition-all flex items-center justify-center gap-1.5">
+                    <button type="button" onclick="app.setEntryType('expense')" id="type-expense-btn" class="flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-bg text-brand-muted transition-all flex items-center justify-center gap-1.5">
                         <i data-lucide="arrow-up-right" class="w-4 h-4 text-brand-red"></i> Saída
                     </button>
                 </div>
                 <input type="hidden" id="entry-type" value="income">
 
                 <div>
-                    <label class="block text-xs font-medium text-brand-gray mb-1.5">Valor (R$)</label>
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Valor (R$)</label>
                     <div class="relative">
-                        <span class="absolute left-3.5 top-3 text-brand-gray font-bold">R$</span>
-                        <input type="number" step="0.01" id="entry-value" required placeholder="0,00" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 pl-11 text-lg font-bold text-brand-white focus:outline-none focus:border-brand-white transition-colors">
+                        <span class="absolute left-3.5 top-3 text-brand-muted font-bold">R$</span>
+                        <input type="number" step="0.01" id="entry-value" required placeholder="0,00" class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 pl-11 text-lg font-bold text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-brand-gray mb-1.5">Descrição</label>
-                    <input type="text" id="entry-desc" required placeholder="Ex: Salário, Mercado, Aluguel..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-white focus:outline-none focus:border-brand-white transition-colors">
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Descrição</label>
+                    <input type="text" id="entry-desc" required placeholder="Ex: Salário, Mercado, Aluguel..." class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-brand-gray mb-1.5">Data</label>
-                    <input type="date" id="entry-date" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-white focus:outline-none focus:border-brand-white transition-colors">
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Data</label>
+                    <input type="date" id="entry-date" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                 </div>
 
-                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-white hover:bg-white/90 text-brand-black font-bold text-sm shadow-lg transition-all mt-2">
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-dark hover:bg-brand-dark/90 text-white font-bold text-sm shadow-md transition-all mt-2">
                     Salvar Transação
                 </button>
             </form>
@@ -254,35 +254,35 @@
     </div>
 
     <!-- MODAL: Bill (Conta a Pagar) -->
-    <div id="modal-bill" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
-        <div class="bg-brand-dark border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-5 shadow-2xl animate-in fade-in slide-in-from-bottom-5">
+    <div id="modal-bill" class="fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
+        <div class="bg-brand-card border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-5 shadow-2xl">
             <div class="flex items-center justify-between border-b border-brand-border pb-3">
-                <h3 class="font-bold text-base">Nova Conta a Pagar</h3>
-                <button onclick="app.closeModal('bill')" class="w-8 h-8 rounded-full bg-brand-card flex items-center justify-center text-brand-gray hover:text-white">
+                <h3 class="font-bold text-base text-brand-dark">Nova Conta a Pagar</h3>
+                <button onclick="app.closeModal('bill')" class="w-8 h-8 rounded-full bg-brand-bg flex items-center justify-center text-brand-muted hover:text-brand-dark">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
             
             <form id="form-bill" onsubmit="app.saveBill(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-medium text-brand-gray mb-1.5">Descrição da Conta</label>
-                    <input type="text" id="bill-desc" required placeholder="Ex: Conta de Luz, Internet, Cartão..." class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-white focus:outline-none focus:border-brand-white transition-colors">
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Descrição da Conta</label>
+                    <input type="text" id="bill-desc" required placeholder="Ex: Conta de Luz, Internet, Cartão..." class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-brand-gray mb-1.5">Valor (R$)</label>
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Valor (R$)</label>
                     <div class="relative">
-                        <span class="absolute left-3.5 top-3 text-brand-gray font-bold">R$</span>
-                        <input type="number" step="0.01" id="bill-value" required placeholder="0,00" class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 pl-11 text-lg font-bold text-brand-white focus:outline-none focus:border-brand-white transition-colors">
+                        <span class="absolute left-3.5 top-3 text-brand-muted font-bold">R$</span>
+                        <input type="number" step="0.01" id="bill-value" required placeholder="0,00" class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 pl-11 text-lg font-bold text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-brand-gray mb-1.5">Data de Vencimento</label>
-                    <input type="date" id="bill-date" required class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-white focus:outline-none focus:border-brand-white transition-colors">
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Data de Vencimento</label>
+                    <input type="date" id="bill-date" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                 </div>
 
-                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-white hover:bg-white/90 text-brand-black font-bold text-sm shadow-lg transition-all mt-2">
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-dark hover:bg-brand-dark/90 text-white font-bold text-sm shadow-md transition-all mt-2">
                     Salvar Conta
                 </button>
             </form>
@@ -293,14 +293,9 @@
     <script>
         class FinanceApp {
             constructor() {
-                this.transactions = JSON.parse(localStorage.getItem('wallet_transactions')) || [
-                    { id: '1', desc: 'Salário Mensal', value: 3500.00, type: 'income', date: new Date().toISOString().split('T')[0] },
-                    { id: '2', desc: 'Supermercado', value: 450.50, type: 'expense', date: new Date().toISOString().split('T')[0] }
-                ];
-                this.bills = JSON.parse(localStorage.getItem('wallet_bills')) || [
-                    { id: '101', desc: 'Energia Elétrica', value: 180.00, dueDate: new Date().toISOString().split('T')[0], paid: false },
-                    { id: '102', desc: 'Internet Fibra', value: 100.00, dueDate: new Date().toISOString().split('T')[0], paid: true }
-                ];
+                // Starts completely empty as requested
+                this.transactions = JSON.parse(localStorage.getItem('control_simples_transactions')) || [];
+                this.bills = JSON.parse(localStorage.getItem('control_simples_bills')) || [];
                 this.currentTab = 'home';
                 this.currentFilter = 'all';
                 this.init();
@@ -308,18 +303,15 @@
 
             init() {
                 this.updateUI();
-                // Set default date inputs to today
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('entry-date').value = today;
                 document.getElementById('bill-date').value = today;
-                
-                // Initialize Lucide icons
                 lucide.createIcons();
             }
 
             saveToStorage() {
-                localStorage.setItem('wallet_transactions', JSON.stringify(this.transactions));
-                localStorage.setItem('wallet_bills', JSON.stringify(this.bills));
+                localStorage.setItem('control_simples_transactions', JSON.stringify(this.transactions));
+                localStorage.setItem('control_simples_bills', JSON.stringify(this.bills));
             }
 
             switchTab(tabName) {
@@ -327,13 +319,14 @@
                 document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
                 document.getElementById(`view-${tabName}`).classList.remove('hidden');
 
-                // Update navbar styles
                 ['home', 'transactions', 'bills'].forEach(t => {
                     const navBtn = document.getElementById(`nav-${t}`);
                     if (t === tabName) {
                         navBtn.className = "flex flex-col items-center space-y-1 text-brand-green transition-colors";
+                        navBtn.querySelector('span').className = "text-[10px] font-bold";
                     } else {
-                        navBtn.className = "flex flex-col items-center space-y-1 text-brand-gray hover:text-brand-white transition-colors";
+                        navBtn.className = "flex flex-col items-center space-y-1 text-brand-muted hover:text-brand-dark transition-colors";
+                        navBtn.querySelector('span').className = "text-[10px] font-semibold";
                     }
                 });
                 lucide.createIcons();
@@ -351,7 +344,6 @@
             }
 
             updateUI() {
-                // Calculate totals
                 let totalIncome = 0;
                 let totalExpense = 0;
 
@@ -362,7 +354,6 @@
 
                 const caixa = totalIncome - totalExpense;
 
-                // Calculate pending bills
                 let totalBillsPending = 0;
                 let totalBillsPaid = 0;
                 this.bills.forEach(b => {
@@ -370,34 +361,30 @@
                     else totalBillsPending += Number(b.value);
                 });
 
-                // Update Dashboard Cards
                 document.getElementById('card-total-caixa').innerText = this.formatCurrency(caixa);
                 document.getElementById('card-total-entradas').innerText = this.formatCurrency(totalIncome);
                 document.getElementById('card-total-saidas').innerText = this.formatCurrency(totalExpense);
                 document.getElementById('card-total-contas').innerText = this.formatCurrency(totalBillsPending);
 
-                // Status badge & styling for negative balance
                 const badge = document.getElementById('badge-status');
                 const cardContainer = document.getElementById('balance-card-container');
                 const glow = document.getElementById('balance-glow');
 
                 if (caixa < 0) {
                     badge.innerText = "Negativo";
-                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-red/20 text-brand-red border border-brand-red/30 animate-pulse";
-                    cardContainer.className = "p-6 rounded-2xl bg-brand-card border border-brand-red/50 shadow-xl relative overflow-hidden transition-all";
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-red/10 text-brand-red border border-brand-red/30 animate-pulse";
+                    cardContainer.className = "p-6 rounded-2xl bg-brand-card border border-brand-red/50 shadow-md relative overflow-hidden transition-all";
                     glow.className = "absolute -right-10 -bottom-10 w-32 h-32 rounded-full opacity-20 bg-brand-red pointer-events-none";
                 } else {
                     badge.innerText = "Positivo";
-                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-green/20 text-brand-green border border-brand-green/30";
-                    cardContainer.className = "p-6 rounded-2xl bg-brand-card border border-brand-border shadow-xl relative overflow-hidden transition-all";
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-green/10 text-brand-green border border-brand-green/20";
+                    cardContainer.className = "p-6 rounded-2xl bg-brand-card border border-brand-border shadow-md relative overflow-hidden transition-all";
                     glow.className = "absolute -right-10 -bottom-10 w-32 h-32 rounded-full opacity-10 bg-brand-green pointer-events-none";
                 }
 
-                // Update Bills summary
                 document.getElementById('bills-total-pendente').innerText = this.formatCurrency(totalBillsPending);
                 document.getElementById('bills-total-pago').innerText = this.formatCurrency(totalBillsPaid);
 
-                // Render lists
                 this.renderRecentTransactions();
                 this.renderFullTransactions();
                 this.renderBills();
@@ -410,26 +397,26 @@
                 const sorted = [...this.transactions].reverse().slice(0, 4);
 
                 if (sorted.length === 0) {
-                    container.innerHTML = `<div class="p-4 text-center rounded-xl bg-brand-card border border-brand-border text-xs text-brand-gray">Nenhuma transação cadastrada.</div>`;
+                    container.innerHTML = `<div class="p-6 text-center rounded-xl bg-brand-card border border-brand-border text-xs text-brand-muted shadow-sm">Nenhuma transação cadastrada ainda.</div>`;
                     return;
                 }
 
                 container.innerHTML = sorted.map(t => `
-                    <div class="flex items-center justify-between p-3 rounded-xl bg-brand-card border border-brand-border hover:border-brand-gray/50 transition-colors">
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
                         <div class="flex items-center space-x-3">
                             <div class="w-9 h-9 rounded-lg ${t.type === 'income' ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'} flex items-center justify-center">
                                 <i data-lucide="${t.type === 'income' ? 'arrow-down-left' : 'arrow-up-right'}" class="w-4 h-4"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold text-brand-white">${t.desc}</h4>
-                                <span class="text-[10px] text-brand-gray">${this.formatDate(t.date)}</span>
+                                <h4 class="text-xs font-bold text-brand-dark">${t.desc}</h4>
+                                <span class="text-[10px] text-brand-muted">${this.formatDate(t.date)}</span>
                             </div>
                         </div>
                         <div class="flex items-center space-x-3">
                             <span class="text-xs font-black ${t.type === 'income' ? 'text-brand-green' : 'text-brand-red'}">
                                 ${t.type === 'income' ? '+' : '-'} ${this.formatCurrency(t.value)}
                             </span>
-                            <button onclick="app.deleteTransaction('${t.id}')" class="text-brand-gray hover:text-brand-red transition-colors">
+                            <button onclick="app.deleteTransaction('${t.id}')" class="text-brand-muted hover:text-brand-red transition-colors p-1">
                                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
@@ -446,26 +433,26 @@
                 }
 
                 if (filtered.length === 0) {
-                    container.innerHTML = `<div class="p-6 text-center rounded-xl bg-brand-card border border-brand-border text-xs text-brand-gray">Nenhuma transação encontrada.</div>`;
+                    container.innerHTML = `<div class="p-8 text-center rounded-xl bg-brand-card border border-brand-border text-xs text-brand-muted shadow-sm">Nenhuma transação encontrada.</div>`;
                     return;
                 }
 
                 container.innerHTML = filtered.map(t => `
-                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border border-brand-border">
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 rounded-xl ${t.type === 'income' ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'} flex items-center justify-center">
                                 <i data-lucide="${t.type === 'income' ? 'arrow-down-left' : 'arrow-up-right'}" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h4 class="text-sm font-bold text-brand-white">${t.desc}</h4>
-                                <span class="text-xs text-brand-gray">${this.formatDate(t.date)}</span>
+                                <h4 class="text-sm font-bold text-brand-dark">${t.desc}</h4>
+                                <span class="text-xs text-brand-muted">${this.formatDate(t.date)}</span>
                             </div>
                         </div>
                         <div class="flex items-center space-x-3">
                             <span class="text-sm font-black ${t.type === 'income' ? 'text-brand-green' : 'text-brand-red'}">
                                 ${t.type === 'income' ? '+' : '-'} ${this.formatCurrency(t.value)}
                             </span>
-                            <button onclick="app.deleteTransaction('${t.id}')" class="p-2 text-brand-gray hover:text-brand-red transition-colors">
+                            <button onclick="app.deleteTransaction('${t.id}')" class="p-2 text-brand-muted hover:text-brand-red transition-colors">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -478,9 +465,9 @@
                 ['all', 'income', 'expense'].forEach(f => {
                     const btn = document.getElementById(`filter-t-${f}`);
                     if (f === type) {
-                        btn.className = "px-3 py-1.5 rounded-lg bg-brand-white font-bold text-brand-black transition-colors";
+                        btn.className = "px-3 py-1.5 rounded-lg bg-brand-dark font-bold text-white transition-colors";
                     } else {
-                        btn.className = "px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-gray transition-colors";
+                        btn.className = "px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-muted transition-colors";
                     }
                 });
                 this.renderFullTransactions();
@@ -492,32 +479,32 @@
                 const sorted = [...this.bills].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
                 if (sorted.length === 0) {
-                    container.innerHTML = `<div class="p-6 text-center rounded-xl bg-brand-card border border-brand-border text-xs text-brand-gray">Nenhuma conta a pagar cadastrada.</div>`;
+                    container.innerHTML = `<div class="p-8 text-center rounded-xl bg-brand-card border border-brand-border text-xs text-brand-muted shadow-sm">Nenhuma conta a pagar cadastrada.</div>`;
                     return;
                 }
 
                 container.innerHTML = sorted.map(b => `
-                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border ${b.paid ? 'border-brand-border opacity-70' : 'border-brand-border'}">
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm ${b.paid ? 'opacity-70' : ''}">
                         <div class="flex items-center space-x-3">
                             <div class="w-10 h-10 rounded-xl ${b.paid ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'} flex items-center justify-center">
                                 <i data-lucide="${b.paid ? 'check-circle' : 'clock'}" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h4 class="text-sm font-bold text-brand-white ${b.paid ? 'line-through text-brand-gray' : ''}">${b.desc}</h4>
-                                <span class="text-xs text-brand-gray">Venc: ${this.formatDate(b.dueDate)}</span>
+                                <h4 class="text-sm font-bold text-brand-dark ${b.paid ? 'line-through text-brand-muted' : ''}">${b.desc}</h4>
+                                <span class="text-xs text-brand-muted">Venc: ${this.formatDate(b.dueDate)}</span>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
                             <div class="text-right mr-1">
-                                <span class="text-sm font-bold text-brand-white block">${this.formatCurrency(b.value)}</span>
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${b.paid ? 'bg-brand-green/20 text-brand-green' : 'bg-brand-red/20 text-brand-red'}">
+                                <span class="text-sm font-bold text-brand-dark block">${this.formatCurrency(b.value)}</span>
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${b.paid ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'}">
                                     ${b.paid ? 'Paga' : 'Pendente'}
                                 </span>
                             </div>
-                            <button onclick="app.toggleBillPaid('${b.id}')" title="${b.paid ? 'Marcar como Pendente' : 'Marcar como Paga'}" class="p-2 rounded-lg bg-brand-dark border border-brand-border text-brand-white hover:border-brand-white transition-colors">
+                            <button onclick="app.toggleBillPaid('${b.id}')" title="${b.paid ? 'Marcar como Pendente' : 'Marcar como Paga'}" class="p-2 rounded-lg bg-brand-bg border border-brand-border text-brand-dark hover:border-brand-dark transition-colors">
                                 <i data-lucide="${b.paid ? 'rotate-ccw' : 'check'}" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="app.deleteBill('${b.id}')" class="p-2 text-brand-gray hover:text-brand-red transition-colors">
+                            <button onclick="app.deleteBill('${b.id}')" class="p-2 text-brand-muted hover:text-brand-red transition-colors">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -544,11 +531,11 @@
                 const expBtn = document.getElementById('type-expense-btn');
 
                 if (type === 'income') {
-                    incBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-green bg-brand-green/20 text-brand-green transition-all flex items-center justify-center gap-1.5";
-                    expBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-card text-brand-gray transition-all flex items-center justify-center gap-1.5";
+                    incBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-green bg-brand-green/10 text-brand-green transition-all flex items-center justify-center gap-1.5";
+                    expBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-bg text-brand-muted transition-all flex items-center justify-center gap-1.5";
                 } else {
-                    expBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-red bg-brand-red/20 text-brand-red transition-all flex items-center justify-center gap-1.5";
-                    incBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-card text-brand-gray transition-all flex items-center justify-center gap-1.5";
+                    expBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-red bg-brand-red/10 text-brand-red transition-all flex items-center justify-center gap-1.5";
+                    incBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-bg text-brand-muted transition-all flex items-center justify-center gap-1.5";
                 }
             }
 
@@ -603,7 +590,6 @@
                 const bill = this.bills.find(b => b.id === id);
                 if (bill) {
                     bill.paid = !bill.paid;
-                    // Opcional: ao pagar a conta, podemos registrar automaticamente como saída se desejar, ou apenas abater das contas pendentes.
                     this.saveToStorage();
                     this.updateUI();
                 }
@@ -616,9 +602,9 @@
             }
 
             resetData() {
-                if (confirm('Deseja realmente apagar todos os dados e reiniciar?')) {
-                    localStorage.removeItem('wallet_transactions');
-                    localStorage.removeItem('wallet_bills');
+                if (confirm('Deseja realmente apagar todos os dados cadastrados e reiniciar do zero?')) {
+                    localStorage.removeItem('control_simples_transactions');
+                    localStorage.removeItem('control_simples_bills');
                     this.transactions = [];
                     this.bills = [];
                     this.updateUI();
@@ -626,8 +612,15 @@
             }
         }
 
-        // Initialize App instance globally
         const app = new FinanceApp();
     </script>
 </body>
 </html>
+```
+eof
+
+### Principais atualizações implementadas:
+1. **Nome:** Configurado para **ControlSimples** no cabeçalho e meta tags PWA.
+2. **Tema Claro Elegante:** Fundo com tons off-white limpos (`#f1f5f9`), cartões brancos, textos escuros de alto contraste (`#0f172a`), verde esmeralda para entradas/positivo e vermelho vibrante para saídas/negativo.
+3. **Inicialização Limpa:** Começa 100% vazio (R$ 0,00 e sem transações fictícias pré-carregadas), permitindo que você adicione seus dados reais do zero.
+```
