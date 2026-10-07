@@ -102,7 +102,7 @@
                         <i data-lucide="receipt" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs text-brand-muted font-medium">Contas a Pagar (Pendentes)</h3>
+                        <h3 class="text-xs text-brand-muted font-medium">Contas do Mês Atual (Pendentes)</h3>
                         <p class="text-lg font-bold text-brand-dark" id="card-total-contas">R$ 0,00</p>
                     </div>
                 </div>
@@ -166,11 +166,11 @@
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
-                    <span class="text-[11px] text-brand-muted block font-medium">Pendente / Restante</span>
+                    <span class="text-[11px] text-brand-muted block font-medium">Mês Atual (Pendente)</span>
                     <span class="text-base font-bold text-brand-red" id="bills-total-pendente">R$ 0,00</span>
                 </div>
                 <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
-                    <span class="text-[11px] text-brand-muted block font-medium">Pagas / Baixadas</span>
+                    <span class="text-[11px] text-brand-muted block font-medium">Pagas no Mês / Baixadas</span>
                     <span class="text-base font-bold text-brand-green" id="bills-total-pago">R$ 0,00</span>
                 </div>
             </div>
@@ -298,7 +298,6 @@
     <script>
         class FinanceApp {
             constructor() {
-                // Starts completely zeroed as requested
                 this.transactions = JSON.parse(localStorage.getItem('control_simples_transactions')) || [];
                 this.bills = JSON.parse(localStorage.getItem('control_simples_bills')) || [];
                 this.currentTab = 'home';
@@ -348,6 +347,13 @@
                 return `${parts[2]}/${parts[1]}/${parts[0]}`;
             }
 
+            isCurrentMonth(dateStr) {
+                if (!dateStr) return false;
+                const now = new Date();
+                const [year, month] = dateStr.split('-');
+                return Number(year) === now.getFullYear() && Number(month) === (now.getMonth() + 1);
+            }
+
             updateUI() {
                 let totalIncome = 0;
                 let totalExpense = 0;
@@ -359,26 +365,35 @@
 
                 const caixa = totalIncome - totalExpense;
 
-                let totalBillsPending = 0;
-                let totalBillsPaid = 0;
+                let totalBillsPendingCurrentMonth = 0;
+                let totalBillsPaidCurrentMonth = 0;
 
                 this.bills.forEach(b => {
+                    const isCurrent = this.isCurrentMonth(b.dueDate);
                     if (b.isInstallment) {
                         const totalInstallments = Number(b.totalInstallments) || 1;
                         const paidInstallments = Number(b.paidInstallments) || 0;
-                        const remaining = totalInstallments - paidInstallments;
-                        totalBillsPending += (remaining * Number(b.value));
-                        totalBillsPaid += (paidInstallments * Number(b.value));
+                        const isFinished = paidInstallments >= totalInstallments;
+
+                        // Se for do mês atual e não estiver finalizada, entra como conta do mês atual
+                        if (isCurrent && !isFinished) {
+                            totalBillsPendingCurrentMonth += Number(b.value);
+                        } else if (isCurrent && isFinished) {
+                            totalBillsPaidCurrentMonth += Number(b.value);
+                        }
                     } else {
-                        if (b.paid) totalBillsPaid += Number(b.value);
-                        else totalBillsPending += Number(b.value);
+                        // Conta única
+                        if (isCurrent) {
+                            if (b.paid) totalBillsPaidCurrentMonth += Number(b.value);
+                            else totalBillsPendingCurrentMonth += Number(b.value);
+                        }
                     }
                 });
 
                 document.getElementById('card-total-caixa').innerText = this.formatCurrency(caixa);
                 document.getElementById('card-total-entradas').innerText = this.formatCurrency(totalIncome);
                 document.getElementById('card-total-saidas').innerText = this.formatCurrency(totalExpense);
-                document.getElementById('card-total-contas').innerText = this.formatCurrency(totalBillsPending);
+                document.getElementById('card-total-contas').innerText = this.formatCurrency(totalBillsPendingCurrentMonth);
 
                 const badge = document.getElementById('badge-status');
                 const cardContainer = document.getElementById('balance-card-container');
@@ -396,8 +411,8 @@
                     glow.className = "absolute -right-10 -bottom-10 w-32 h-32 rounded-full opacity-10 bg-brand-green pointer-events-none";
                 }
 
-                document.getElementById('bills-total-pendente').innerText = this.formatCurrency(totalBillsPending);
-                document.getElementById('bills-total-pago').innerText = this.formatCurrency(totalBillsPaid);
+                document.getElementById('bills-total-pendente').innerText = this.formatCurrency(totalBillsPendingCurrentMonth);
+                document.getElementById('bills-total-pago').innerText = this.formatCurrency(totalBillsPaidCurrentMonth);
 
                 this.renderRecentTransactions();
                 this.renderFullTransactions();
@@ -498,6 +513,7 @@
                 }
 
                 container.innerHTML = sorted.map(b => {
+                    const isCurrent = this.isCurrentMonth(b.dueDate);
                     if (b.isInstallment) {
                         const total = Number(b.totalInstallments);
                         const paid = Number(b.paidInstallments);
@@ -511,20 +527,23 @@
                                         </div>
                                         <div>
                                             <h4 class="text-sm font-bold text-brand-dark ${isFinished ? 'line-through text-brand-muted' : ''}">${b.desc}</h4>
-                                            <span class="text-xs text-brand-muted">Parcelado: <strong>${paid}/${total}</strong> pagas</span>
+                                            <span class="text-xs text-brand-muted">Parcela atual: <strong>${paid + 1 <= total ? paid + 1 : total}/${total}</strong></span>
                                         </div>
                                     </div>
                                     <div class="text-right">
                                         <span class="text-sm font-black text-brand-dark block">${this.formatCurrency(b.value)}</span>
-                                        <span class="text-[10px] text-brand-muted">por mês</span>
+                                        <span class="text-[10px] text-brand-muted">valor mensal</span>
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between pt-2 border-t border-brand-border text-xs">
-                                    <span class="text-brand-muted">Vencimento: ${this.formatDate(b.dueDate)}</span>
+                                    <span class="text-brand-muted flex items-center gap-1">
+                                        Vencimento: ${this.formatDate(b.dueDate)} 
+                                        ${isCurrent ? '<span class="px-1.5 py-0.5 bg-brand-dark text-white rounded text-[9px] font-bold">Mês Atual</span>' : ''}
+                                    </span>
                                     <div class="flex gap-2">
                                         ${!isFinished ? `
                                             <button onclick="app.advanceInstallment('${b.id}')" class="px-3 py-1.5 rounded-lg bg-brand-green text-white font-bold flex items-center gap-1 shadow-sm hover:bg-brand-greenHover">
-                                                <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i> Pagar/Antecipar
+                                                <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i> Pagar Parcela
                                             </button>
                                         ` : `
                                             <span class="px-2.5 py-1 rounded-lg bg-brand-green/10 text-brand-green font-bold text-[11px]">Finalizada</span>
@@ -545,7 +564,10 @@
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-bold text-brand-dark ${b.paid ? 'line-through text-brand-muted' : ''}">${b.desc}</h4>
-                                        <span class="text-xs text-brand-muted">Venc: ${this.formatDate(b.dueDate)}</span>
+                                        <span class="text-xs text-brand-muted flex items-center gap-1">
+                                            Venc: ${this.formatDate(b.dueDate)}
+                                            ${isCurrent ? '<span class="px-1.5 py-0.5 bg-brand-dark text-white rounded text-[9px] font-bold">Mês Atual</span>' : ''}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
@@ -692,11 +714,10 @@
                     if (bill.paidInstallments < bill.totalInstallments) {
                         bill.paidInstallments += 1;
                         
-                        // Opcional: registrar automaticamente na caixa de saída a parcela paga para controle exato de saldo
                         const today = new Date().toISOString().split('T')[0];
                         this.transactions.push({
                             id: Date.now().toString(),
-                            desc: `${bill.desc} (${bill.paidInstallments}/${bill.totalInstallments})`,
+                            desc: `${bill.desc} (Parc. ${bill.paidInstallments}/${bill.totalInstallments})`,
                             value: Number(bill.value),
                             type: 'expense',
                             date: today
