@@ -54,7 +54,6 @@
 </head>
 <body class="h-full flex flex-col max-w-md mx-auto bg-brand-bg shadow-2xl relative overflow-hidden">
 
-    <!-- Header -->
     <header class="px-5 py-4 border-b border-brand-border bg-white/90 backdrop-blur sticky top-0 z-30 flex items-center justify-between shadow-sm">
         <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-brand-dark flex items-center justify-center text-white font-black shadow-md">
@@ -71,7 +70,6 @@
         </button>
     </header>
 
-    <!-- Main Content Container -->
     <main class="flex-1 overflow-y-auto pb-24 pt-4 px-4 space-y-5">
         
         <!-- SECTION: HOME / DASHBOARD -->
@@ -132,9 +130,7 @@
                     <h2 class="text-xs font-bold tracking-wider uppercase text-brand-muted">Últimas Transações</h2>
                     <button onclick="app.switchTab('transactions')" class="text-xs text-brand-green font-bold hover:underline">Ver todas</button>
                 </div>
-                <div id="recent-transactions-list" class="space-y-2">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="recent-transactions-list" class="space-y-2"></div>
             </div>
         </section>
 
@@ -147,16 +143,13 @@
                 </button>
             </div>
             
-            <!-- Filter buttons -->
             <div class="flex gap-2 text-xs">
                 <button onclick="app.filterTransactions('all')" id="filter-t-all" class="px-3 py-1.5 rounded-lg bg-brand-dark text-white font-medium transition-colors">Todas</button>
                 <button onclick="app.filterTransactions('income')" id="filter-t-income" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-muted transition-colors">Entradas</button>
                 <button onclick="app.filterTransactions('expense')" id="filter-t-expense" class="px-3 py-1.5 rounded-lg bg-brand-card border border-brand-border font-medium text-brand-muted transition-colors">Saídas</button>
             </div>
 
-            <div id="full-transactions-list" class="space-y-2">
-                <!-- Populated via JS -->
-            </div>
+            <div id="full-transactions-list" class="space-y-2"></div>
         </section>
 
         <!-- SECTION: BILLS / CONTAS A PAGAR -->
@@ -164,7 +157,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-brand-dark">Contas a Pagar</h2>
-                    <p class="text-xs text-brand-muted">Gerencie vencimentos e boletos</p>
+                    <p class="text-xs text-brand-muted">Normais, fixas e parceladas</p>
                 </div>
                 <button onclick="app.openModal('bill')" class="px-3 py-1.5 rounded-lg bg-brand-dark text-white font-semibold text-xs flex items-center gap-1.5 shadow">
                     <i data-lucide="plus" class="w-4 h-4"></i> Nova Conta
@@ -173,23 +166,20 @@
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
-                    <span class="text-[11px] text-brand-muted block font-medium">Pendente</span>
+                    <span class="text-[11px] text-brand-muted block font-medium">Pendente / Restante</span>
                     <span class="text-base font-bold text-brand-red" id="bills-total-pendente">R$ 0,00</span>
                 </div>
                 <div class="p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm">
-                    <span class="text-[11px] text-brand-muted block font-medium">Pagas</span>
+                    <span class="text-[11px] text-brand-muted block font-medium">Pagas / Baixadas</span>
                     <span class="text-base font-bold text-brand-green" id="bills-total-pago">R$ 0,00</span>
                 </div>
             </div>
 
-            <div id="bills-list" class="space-y-2 pt-1">
-                <!-- Populated via JS -->
-            </div>
+            <div id="bills-list" class="space-y-2 pt-1"></div>
         </section>
 
     </main>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="absolute bottom-0 left-0 right-0 h-20 bg-white/95 border-t border-brand-border backdrop-blur-md px-6 flex items-center justify-around z-30 shadow-lg">
         <button onclick="app.switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-brand-green transition-colors">
             <i data-lucide="home" class="w-5 h-5"></i>
@@ -205,19 +195,16 @@
         </button>
     </nav>
 
-    <!-- MODAL: Transaction Entry -->
     <div id="modal-entry" class="fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
         <div class="bg-brand-card border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-5 shadow-2xl">
             <div class="flex items-center justify-between border-b border-brand-border pb-3">
-                <h3 id="modal-entry-title" class="font-bold text-base text-brand-dark">Nova Transação</h3>
+                <h3 class="font-bold text-base text-brand-dark">Nova Transação</h3>
                 <button onclick="app.closeModal('entry')" class="w-8 h-8 rounded-full bg-brand-bg flex items-center justify-center text-brand-muted hover:text-brand-dark">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
             
             <form id="form-entry" onsubmit="app.saveTransaction(event)" class="space-y-4">
-                <input type="hidden" id="entry-id">
-                
                 <div class="flex gap-2">
                     <button type="button" onclick="app.setEntryType('income')" id="type-income-btn" class="flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-bg text-brand-muted transition-all flex items-center justify-center gap-1.5">
                         <i data-lucide="arrow-down-left" class="w-4 h-4 text-brand-green"></i> Entrada
@@ -238,7 +225,7 @@
 
                 <div>
                     <label class="block text-xs font-semibold text-brand-muted mb-1.5">Descrição</label>
-                    <input type="text" id="entry-desc" required placeholder="Ex: Salário, Mercado, Aluguel..." class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
+                    <input type="text" id="entry-desc" required placeholder="Ex: Salário, Mercado..." class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                 </div>
 
                 <div>
@@ -253,9 +240,8 @@
         </div>
     </div>
 
-    <!-- MODAL: Bill (Conta a Pagar) -->
     <div id="modal-bill" class="fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
-        <div class="bg-brand-card border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-5 shadow-2xl">
+        <div class="bg-brand-card border border-brand-border w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-brand-border pb-3">
                 <h3 class="font-bold text-base text-brand-dark">Nova Conta a Pagar</h3>
                 <button onclick="app.closeModal('bill')" class="w-8 h-8 rounded-full bg-brand-bg flex items-center justify-center text-brand-muted hover:text-brand-dark">
@@ -265,20 +251,40 @@
             
             <form id="form-bill" onsubmit="app.saveBill(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Descrição da Conta</label>
-                    <input type="text" id="bill-desc" required placeholder="Ex: Conta de Luz, Internet, Cartão..." class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Tipo de Conta</label>
+                    <select id="bill-type-mode" onchange="app.toggleBillMode(this.value)" class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors font-medium">
+                        <option value="normal">Conta Única (Normal)</option>
+                        <option value="installment">Conta Fixa / Parcelada (Mensal)</option>
+                    </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Valor (R$)</label>
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Descrição da Conta</label>
+                    <input type="text" id="bill-desc" required placeholder="Ex: Conta de Luz, Empréstimo, Cartão..." class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5" id="bill-value-label">Valor (R$)</label>
                     <div class="relative">
                         <span class="absolute left-3.5 top-3 text-brand-muted font-bold">R$</span>
                         <input type="number" step="0.01" id="bill-value" required placeholder="0,00" class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 pl-11 text-lg font-bold text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                     </div>
                 </div>
 
+                <div id="installment-fields" class="hidden space-y-4 p-3.5 rounded-xl bg-brand-bg border border-brand-border">
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1.5">Quantidade Total de Parcelas</label>
+                        <input type="number" min="2" max="120" id="bill-total-installments" value="12" class="w-full bg-white border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold text-brand-dark focus:outline-none focus:border-brand-dark">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-brand-muted mb-1.5">Parcelas já Pagas (Início)</label>
+                        <input type="number" min="0" max="119" id="bill-paid-installments" value="0" class="w-full bg-white border border-brand-border rounded-xl px-4 py-2.5 text-sm font-bold text-brand-dark focus:outline-none focus:border-brand-dark">
+                        <p class="text-[10px] text-brand-muted mt-1">Informe se você já quitou algumas parcelas antes de cadastrar aqui.</p>
+                    </div>
+                </div>
+
                 <div>
-                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Data de Vencimento</label>
+                    <label class="block text-xs font-semibold text-brand-muted mb-1.5">Data de Vencimento (Primeira ou Vencimento Mensal)</label>
                     <input type="date" id="bill-date" required class="w-full bg-brand-bg border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-dark focus:outline-none focus:border-brand-dark transition-colors">
                 </div>
 
@@ -289,11 +295,10 @@
         </div>
     </div>
 
-    <!-- App Logic Script -->
     <script>
         class FinanceApp {
             constructor() {
-                // Starts completely empty as requested
+                // Starts completely zeroed as requested
                 this.transactions = JSON.parse(localStorage.getItem('control_simples_transactions')) || [];
                 this.bills = JSON.parse(localStorage.getItem('control_simples_bills')) || [];
                 this.currentTab = 'home';
@@ -356,9 +361,18 @@
 
                 let totalBillsPending = 0;
                 let totalBillsPaid = 0;
+
                 this.bills.forEach(b => {
-                    if (b.paid) totalBillsPaid += Number(b.value);
-                    else totalBillsPending += Number(b.value);
+                    if (b.isInstallment) {
+                        const totalInstallments = Number(b.totalInstallments) || 1;
+                        const paidInstallments = Number(b.paidInstallments) || 0;
+                        const remaining = totalInstallments - paidInstallments;
+                        totalBillsPending += (remaining * Number(b.value));
+                        totalBillsPaid += (paidInstallments * Number(b.value));
+                    } else {
+                        if (b.paid) totalBillsPaid += Number(b.value);
+                        else totalBillsPending += Number(b.value);
+                    }
                 });
 
                 document.getElementById('card-total-caixa').innerText = this.formatCurrency(caixa);
@@ -483,44 +497,90 @@
                     return;
                 }
 
-                container.innerHTML = sorted.map(b => `
-                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm ${b.paid ? 'opacity-70' : ''}">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl ${b.paid ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'} flex items-center justify-center">
-                                <i data-lucide="${b.paid ? 'check-circle' : 'clock'}" class="w-5 h-5"></i>
+                container.innerHTML = sorted.map(b => {
+                    if (b.isInstallment) {
+                        const total = Number(b.totalInstallments);
+                        const paid = Number(b.paidInstallments);
+                        const isFinished = paid >= total;
+                        return `
+                            <div class="p-4 rounded-xl bg-brand-card border border-brand-border shadow-sm space-y-3 ${isFinished ? 'opacity-70' : ''}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-xl ${isFinished ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'} flex items-center justify-center">
+                                            <i data-lucide="${isFinished ? 'check-circle' : 'layers'}" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-brand-dark ${isFinished ? 'line-through text-brand-muted' : ''}">${b.desc}</h4>
+                                            <span class="text-xs text-brand-muted">Parcelado: <strong>${paid}/${total}</strong> pagas</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-black text-brand-dark block">${this.formatCurrency(b.value)}</span>
+                                        <span class="text-[10px] text-brand-muted">por mês</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-2 border-t border-brand-border text-xs">
+                                    <span class="text-brand-muted">Vencimento: ${this.formatDate(b.dueDate)}</span>
+                                    <div class="flex gap-2">
+                                        ${!isFinished ? `
+                                            <button onclick="app.advanceInstallment('${b.id}')" class="px-3 py-1.5 rounded-lg bg-brand-green text-white font-bold flex items-center gap-1 shadow-sm hover:bg-brand-greenHover">
+                                                <i data-lucide="fast-forward" class="w-3.5 h-3.5"></i> Pagar/Antecipar
+                                            </button>
+                                        ` : `
+                                            <span class="px-2.5 py-1 rounded-lg bg-brand-green/10 text-brand-green font-bold text-[11px]">Finalizada</span>
+                                        `}
+                                        <button onclick="app.deleteBill('${b.id}')" class="p-1.5 text-brand-muted hover:text-brand-red transition-colors">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-brand-dark ${b.paid ? 'line-through text-brand-muted' : ''}">${b.desc}</h4>
-                                <span class="text-xs text-brand-muted">Venc: ${this.formatDate(b.dueDate)}</span>
+                        `;
+                    } else {
+                        return `
+                            <div class="flex items-center justify-between p-3.5 rounded-xl bg-brand-card border border-brand-border shadow-sm ${b.paid ? 'opacity-70' : ''}">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-xl ${b.paid ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'} flex items-center justify-center">
+                                        <i data-lucide="${b.paid ? 'check-circle' : 'clock'}" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-brand-dark ${b.paid ? 'line-through text-brand-muted' : ''}">${b.desc}</h4>
+                                        <span class="text-xs text-brand-muted">Venc: ${this.formatDate(b.dueDate)}</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="text-right mr-1">
+                                        <span class="text-sm font-bold text-brand-dark block">${this.formatCurrency(b.value)}</span>
+                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${b.paid ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'}">
+                                            ${b.paid ? 'Paga' : 'Pendente'}
+                                        </span>
+                                    </div>
+                                    <button onclick="app.toggleBillPaid('${b.id}')" title="${b.paid ? 'Marcar como Pendente' : 'Marcar como Paga'}" class="p-2 rounded-lg bg-brand-bg border border-brand-border text-brand-dark hover:border-brand-dark transition-colors">
+                                        <i data-lucide="${b.paid ? 'rotate-ccw' : 'check'}" class="w-4 h-4"></i>
+                                    </button>
+                                    <button onclick="app.deleteBill('${b.id}')" class="p-2 text-brand-muted hover:text-brand-red transition-colors">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="text-right mr-1">
-                                <span class="text-sm font-bold text-brand-dark block">${this.formatCurrency(b.value)}</span>
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${b.paid ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-red/10 text-brand-red'}">
-                                    ${b.paid ? 'Paga' : 'Pendente'}
-                                </span>
-                            </div>
-                            <button onclick="app.toggleBillPaid('${b.id}')" title="${b.paid ? 'Marcar como Pendente' : 'Marcar como Paga'}" class="p-2 rounded-lg bg-brand-bg border border-brand-border text-brand-dark hover:border-brand-dark transition-colors">
-                                <i data-lucide="${b.paid ? 'rotate-ccw' : 'check'}" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="app.deleteBill('${b.id}')" class="p-2 text-brand-muted hover:text-brand-red transition-colors">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                        `;
+                    }
+                }).join('');
             }
 
             openModal(modalType, defaultType = 'income') {
+                document.getElementById(`modal-${modalType}`).classList.add('flex');
                 document.getElementById(`modal-${modalType}`).classList.remove('hidden');
                 if (modalType === 'entry') {
                     this.setEntryType(defaultType);
+                } else if (modalType === 'bill') {
+                    this.toggleBillMode('normal');
                 }
             }
 
             closeModal(modalType) {
                 document.getElementById(`modal-${modalType}`).classList.add('hidden');
+                document.getElementById(`modal-${modalType}`).classList.remove('flex');
                 if(modalType === 'entry') document.getElementById('form-entry').reset();
                 if(modalType === 'bill') document.getElementById('form-bill').reset();
             }
@@ -536,6 +596,19 @@
                 } else {
                     expBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-red bg-brand-red/10 text-brand-red transition-all flex items-center justify-center gap-1.5";
                     incBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-xs border border-brand-border bg-brand-bg text-brand-muted transition-all flex items-center justify-center gap-1.5";
+                }
+            }
+
+            toggleBillMode(mode) {
+                const isInstallment = mode === 'installment';
+                const instFields = document.getElementById('installment-fields');
+                const label = document.getElementById('bill-value-label');
+                if (isInstallment) {
+                    instFields.classList.remove('hidden');
+                    label.innerText = "Valor da Parcela Mensal (R$)";
+                } else {
+                    instFields.classList.add('hidden');
+                    label.innerText = "Valor (R$)";
                 }
             }
 
@@ -568,19 +641,37 @@
 
             saveBill(e) {
                 e.preventDefault();
+                const mode = document.getElementById('bill-type-mode').value;
                 const desc = document.getElementById('bill-desc').value;
                 const value = parseFloat(document.getElementById('bill-value').value);
                 const dueDate = document.getElementById('bill-date').value;
 
-                const newB = {
-                    id: Date.now().toString(),
-                    desc,
-                    value,
-                    dueDate,
-                    paid: false
-                };
+                if (mode === 'installment') {
+                    const totalInstallments = parseInt(document.getElementById('bill-total-installments').value) || 12;
+                    const paidInstallments = parseInt(document.getElementById('bill-paid-installments').value) || 0;
+                    
+                    const newB = {
+                        id: Date.now().toString(),
+                        desc,
+                        value,
+                        dueDate,
+                        isInstallment: true,
+                        totalInstallments,
+                        paidInstallments
+                    };
+                    this.bills.push(newB);
+                } else {
+                    const newB = {
+                        id: Date.now().toString(),
+                        desc,
+                        value,
+                        dueDate,
+                        paid: false,
+                        isInstallment: false
+                    };
+                    this.bills.push(newB);
+                }
 
-                this.bills.push(newB);
                 this.saveToStorage();
                 this.closeModal('bill');
                 this.updateUI();
@@ -588,10 +679,32 @@
 
             toggleBillPaid(id) {
                 const bill = this.bills.find(b => b.id === id);
-                if (bill) {
+                if (bill && !bill.isInstallment) {
                     bill.paid = !bill.paid;
                     this.saveToStorage();
                     this.updateUI();
+                }
+            }
+
+            advanceInstallment(id) {
+                const bill = this.bills.find(b => b.id === id);
+                if (bill && bill.isInstallment) {
+                    if (bill.paidInstallments < bill.totalInstallments) {
+                        bill.paidInstallments += 1;
+                        
+                        // Opcional: registrar automaticamente na caixa de saída a parcela paga para controle exato de saldo
+                        const today = new Date().toISOString().split('T')[0];
+                        this.transactions.push({
+                            id: Date.now().toString(),
+                            desc: `${bill.desc} (${bill.paidInstallments}/${bill.totalInstallments})`,
+                            value: Number(bill.value),
+                            type: 'expense',
+                            date: today
+                        });
+
+                        this.saveToStorage();
+                        this.updateUI();
+                    }
                 }
             }
 
